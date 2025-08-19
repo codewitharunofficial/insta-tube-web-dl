@@ -69,7 +69,7 @@ const Main = () => {
     };
 
     return (
-        <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 pt-16 px-4 min-w-screen">
+        <main className="flex flex-col items-center justify-center h-screen bg-gray-50 px-4 min-w-screen">
             <h1 className="text-4xl md:text-5xl font-extrabold text-blue-600 mb-8 text-center drop-shadow">
                 Insta<span className="text-pink-500">Tube</span>
             </h1>

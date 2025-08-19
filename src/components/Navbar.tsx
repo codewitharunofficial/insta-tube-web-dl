@@ -14,8 +14,8 @@ const Navbar = () => {
 
     return (
         <nav className="bg-white shadow-md fixed w-full z-10">
-            <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-                <div className="text-2xl font-bold text-blue-600">InstaTube</div>
+            <div className="max-w-9xl mx-auto px-4 flex justify-between items-center h-16">
+                <h4 className="text-2xl font-bold text-blue-600">Insta<span className="text-pink-500">Tube</span></h4>
                 <div className="hidden md:flex space-x-8">
                     {links.map((link) => (
                         <a
