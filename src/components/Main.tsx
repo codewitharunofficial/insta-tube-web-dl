@@ -81,6 +81,7 @@ const Main = () => {
         }
     };
 
+
     return (
         <main className="flex flex-col items-center justify-center min-h-screen bg-rgb(249, 250, 251) px-4 min-w-screen pt-24 pb-4">
             <h1 className="text-4xl md:text-5xl font-extrabold text-blue-600 mb-8 text-center drop-shadow">
@@ -140,51 +141,7 @@ const Main = () => {
                             <h3 className="text-lg font-semibold text-gray-700 mb-2">
                                 Other Videos
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                {media.video.map((v, idx) => (
-                                    <motion.a
-                                        key={idx}
-                                        href={v.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="flex flex-col items-center justify-center px-4 py-3 rounded-xl bg-blue-600 text-white shadow-md hover:bg-blue-700 transition"
-                                    >
-                                        <span className="font-semibold">
-                                            {v.qualityLabel || "Download"}
-                                        </span>
-                                        <span className="text-xs opacity-80 mt-1">
-                                            {v.mimeType?.split(";")[0] || "video/mp4"}{" "}
-                                            {v.size ? `(${v.size})` : ""}
-                                        </span>
-                                    </motion.a>
-                                ))}
-                            </div>
 
-                            {/* All Audios */}
-                            <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                                Other Audios
-                            </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {media.audio.map((a, idx) => (
-                                    <motion.a
-                                        key={idx}
-                                        href={a.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="flex flex-col items-center justify-center px-4 py-3 rounded-xl bg-green-600 text-white shadow-md hover:bg-green-700 transition"
-                                    >
-                                        <span className="font-semibold">MP3</span>
-                                        <span className="text-xs opacity-80 mt-1">
-                                            {a.mimeType?.split(";")[0] || "audio/mp3"}{" "}
-                                            {a.size ? `(${a.size})` : ""}
-                                        </span>
-                                    </motion.a>
-                                ))}
-                            </div>
                         </>
                     )}
 

@@ -11,9 +11,8 @@ interface CardProps {
 
 export const Card = ({ item, idx }: CardProps) => {
 
-    console.log(item);
-
     const [image, setImage] = useState<string | undefined>(undefined);
+    const [isDownloading, setIsDownloading] = useState(false);
 
     async function getByassPassedImage(url: string) {
         const { data } = await axios.post(
@@ -29,6 +28,40 @@ export const Card = ({ item, idx }: CardProps) => {
             getByassPassedImage(item.url);
         }
     }, [item]);
+
+
+    const handleDownload = async (url: string, type: string) => {
+        try {
+            setIsDownloading(true);
+            const response = await fetch(
+                `/api/${type === "video" ? "download/insta-video" : "download/insta-image"
+                }`,
+                { method: "POST", body: JSON.stringify({ url }) }
+            );
+
+
+            const blob = await response.blob();
+            const downloadableUrl = window.URL.createObjectURL(blob);
+
+            console.log(downloadableUrl);
+
+            const link = document.createElement("a");
+            link.href = downloadableUrl;
+            link.download = `insta.${type === "video" ? "mp4" : "jpg"}`;
+            document.body.appendChild(link);
+            link.click();
+
+            //clean up
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(downloadableUrl);
+            setIsDownloading(false);
+
+        } catch (error) {
+            console.log(error);
+            setIsDownloading(false);
+
+        }
+    };
 
     return (
         <motion.div
@@ -54,16 +87,19 @@ export const Card = ({ item, idx }: CardProps) => {
             ) : null}
 
             {/* Download Button */}
-            <motion.a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
+            <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 rounded-lg bg-pink-600 text-white font-semibold hover:bg-pink-700 transition"
+                className="px-6 py-2 rounded-lg bg-pink-600 text-white font-semibold hover:bg-pink-700 transition cursor-pointer"
+                onClick={(e) => {
+                    e.preventDefault();
+                    handleDownload(item.url, item.type);
+                }}
             >
-                Download {item.type === "video" ? "Video" : "Image"}
-            </motion.a>
+                Download {item.type === "video" ? "Video" : "Image"} {isDownloading ? "Downloading..." : ""}
+            </motion.button>
         </motion.div>
     )
 }
+
+
