@@ -82,7 +82,7 @@ const Main = () => {
     };
 
     return (
-        <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 min-w-screen">
+        <main className="flex flex-col items-center justify-center min-h-screen bg-rgb(249, 250, 251) px-4 min-w-screen pt-24 pb-4">
             <h1 className="text-4xl md:text-5xl font-extrabold text-blue-600 mb-8 text-center drop-shadow">
                 Insta<span className="text-pink-500">Tube</span> -{" "}
                 <span className="text-blue-600">DL</span>
@@ -133,7 +133,7 @@ const Main = () => {
                         <>
                             {/* Best Quality Section */}
                             {(media.bestVideo || media.bestAudio) && (
-                               <YoutubeCard media={media} />
+                                <YoutubeCard media={media} />
                             )}
 
                             {/* All Videos */}
@@ -190,7 +190,7 @@ const Main = () => {
 
                     {/* Instagram */}
                     {!isYouTube && "media" in media && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className={`${media.media.length > 1 ? "grid" : "flex items-center justify-center"} grid-cols-1 sm:grid-cols-2 gap-6`}>
                             {media.media.map((item, idx) => (
                                 <Card key={idx} item={item} idx={idx} />
                             ))}
