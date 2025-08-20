@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { Card } from "./Card";
+import YoutubeCard from "./YoutubeCard";
 
 type MediaFormat = {
     url: string;
@@ -11,7 +13,7 @@ type MediaFormat = {
     size?: string;
 };
 
-type YouTubeData = {
+export type YouTubeData = {
     title: string;
     thumbnail: string;
     video: MediaFormat[];
@@ -20,15 +22,22 @@ type YouTubeData = {
     bestAudio?: MediaFormat;
 };
 
+type InstaMediaData = {
+    url: string;
+    type: "video" | "image";
+    thumbnail?: string;
+};
+
 type InstaData = {
     title: string;
-    thumbnail: string;
-    media: string; // Instagram returns single video URL
+    media: InstaMediaData[];
 };
+
+type ResponseData = YouTubeData | InstaData;
 
 const Main = () => {
     const [url, setUrl] = useState("");
-    const [media, setMedia] = useState<YouTubeData | InstaData | null>(null);
+    const [media, setMedia] = useState<ResponseData | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [isYouTube, setIsYouTube] = useState(false);
@@ -56,7 +65,11 @@ const Main = () => {
             const { data } = await axios.post(endpoint, { url });
 
             if (data.success) {
-                setMedia(data.data);
+                if (endpoint.includes("instagram")) {
+                    setMedia(data.data as InstaData);
+                } else {
+                    setMedia(data.data as YouTubeData);
+                }
             } else {
                 setError("No media found for this URL");
             }
@@ -69,9 +82,10 @@ const Main = () => {
     };
 
     return (
-        <main className="flex flex-col items-center justify-center h-screen bg-gray-50 px-4 min-w-screen">
+        <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 min-w-screen">
             <h1 className="text-4xl md:text-5xl font-extrabold text-blue-600 mb-8 text-center drop-shadow">
-                Insta<span className="text-pink-500">Tube</span>
+                Insta<span className="text-pink-500">Tube</span> -{" "}
+                <span className="text-blue-600">DL</span>
             </h1>
 
             {/* Input Form */}
@@ -114,56 +128,18 @@ const Main = () => {
                         {media.title}
                     </h2>
 
-                    {/* Thumbnail */}
-                    <motion.img
-                        src={media.thumbnail}
-                        alt={media.title}
-                        className="w-full rounded-xl shadow-md mb-6"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.7 }}
-                    />
-
-                    {/* YouTube: Show Video + Audio */}
+                    {/* YouTube */}
                     {isYouTube && "video" in media && (
                         <>
                             {/* Best Quality Section */}
                             {(media.bestVideo || media.bestAudio) && (
-                                <div className="mb-8">
-                                    <h3 className="text-lg font-bold text-gray-800 mb-3 text-center">
-                                        Best Quality Downloads
-                                    </h3>
-                                    <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                        {media.bestVideo && (
-                                            <motion.a
-                                                href={media.bestVideo.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-lg hover:opacity-90 transition"
-                                            >
-                                                Download Best MP4 ({media.bestVideo.qualityLabel})
-                                            </motion.a>
-                                        )}
-                                        {media.bestAudio && (
-                                            <motion.a
-                                                href={media.bestAudio.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-lg hover:opacity-90 transition"
-                                            >
-                                                Download Best MP3
-                                            </motion.a>
-                                        )}
-                                    </div>
-                                </div>
+                               <YoutubeCard media={media} />
                             )}
 
-                            {/* All Video Formats */}
-                            <h3 className="text-lg font-semibold text-gray-700 mb-2">Other Videos</h3>
+                            {/* All Videos */}
+                            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                                Other Videos
+                            </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                                 {media.video.map((v, idx) => (
                                     <motion.a
@@ -186,8 +162,10 @@ const Main = () => {
                                 ))}
                             </div>
 
-                            {/* All Audio Formats */}
-                            <h3 className="text-lg font-semibold text-gray-700 mb-2">Other Audios</h3>
+                            {/* All Audios */}
+                            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                                Other Audios
+                            </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {media.audio.map((a, idx) => (
                                     <motion.a
@@ -210,20 +188,12 @@ const Main = () => {
                         </>
                     )}
 
-
-                    {/* Instagram: Only Video */}
+                    {/* Instagram */}
                     {!isYouTube && "media" in media && (
-                        <div className="grid grid-cols-1 gap-4">
-                            <motion.a
-                                href={media.media}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="flex flex-col items-center justify-center px-4 py-3 rounded-xl bg-pink-600 text-white shadow-md hover:bg-pink-700 transition"
-                            >
-                                <span className="font-semibold">Download MP4</span>
-                            </motion.a>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            {media.media.map((item, idx) => (
+                                <Card key={idx} item={item} idx={idx} />
+                            ))}
                         </div>
                     )}
                 </motion.div>

@@ -23,9 +23,62 @@ export async function POST(req: Request) {
       },
     });
 
-    if (!data || !data.data || !data.data.video_url) {
+    if (!data || !data.data) {
       return NextResponse.json(
-        { error: "Media not found in response" },
+        { error: "Invalid response from Instagram API" },
+        { status: 500 }
+      );
+    }
+
+    const igData = data.data;
+
+    // Normalize response
+    let responseMedia: any[] = [];
+
+    // Single video
+    if (igData.video_url) {
+      responseMedia.push({
+        type: "video",
+        url: igData.video_url,
+        thumbnail: igData.image_versions?.items?.[0]?.url || "",
+      });
+    }
+
+    // Single image
+    if (igData.image_versions?.items?.length) {
+      responseMedia.push({
+        type: "image",
+        url: igData.image_versions.items[0].url,
+        thumbnail: igData.image_versions.items[0].url,
+      });
+    }
+
+    // Carousel (images or videos)
+    if (igData.carousel_media?.length) {
+      responseMedia = igData.carousel_media
+        .map((item: any) => {
+          if (item.video_url) {
+            return {
+              type: "video",
+              url: item.video_url,
+              thumbnail: item.thumbnail_url || "",
+            };
+          }
+          if (item.image_versions?.items?.length) {
+            return {
+              type: "image",
+              url: item.image_versions.items[0].url,
+              thumbnail: item.image_versions.items[0].url,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
+    }
+
+    if (!responseMedia.length) {
+      return NextResponse.json(
+        { error: "No media found in post" },
         { status: 404 }
       );
     }
@@ -34,9 +87,8 @@ export async function POST(req: Request) {
       {
         success: true,
         data: {
-          title: data.data.caption?.text || "Instagram Video",
-          thumbnail: data.data.image_versions?.items?.[0]?.url || "",
-          media: data.data.video_url,
+          title: igData.caption?.text || "Instagram Post",
+          media: responseMedia,
         },
       },
       {
@@ -63,7 +115,7 @@ export async function OPTIONS() {
     {},
     {
       headers: {
-        "Access-Control-Allow-Origin": "*", // 🔒 restrict in prod
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
       },
