@@ -9,7 +9,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="max-w-3xl bg-white shadow-xl rounded-2xl p-8"
+                className="max-w-3xl bg-white shadow-xl rounded-2xl p-8 mt-8"
             >
                 <h1 className="text-4xl font-extrabold text-blue-600 mb-6">
                     About <span className="text-pink-500">InstaTube</span>

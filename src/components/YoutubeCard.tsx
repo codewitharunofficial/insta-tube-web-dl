@@ -81,7 +81,7 @@ const YoutubeCard = ({ media }: { media: YouTubeData }) => {
                             }
                         >
                             {downloading === media.bestAudio.url
-                                ? "Downloading..."
+                                ? "Please Wait..."
                                 : "Download Best MP3"}
                         </motion.button>
                     </div>

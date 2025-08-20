@@ -17,8 +17,8 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 px-4 py-12">
-            <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+        <div className="sm:min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 px-4 py-12">
+            <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 mt-8">
                 <h1 className="text-3xl font-bold mb-2 text-gray-800">Contact Us</h1>
                 <p className="mb-6 text-gray-500">We'd love to hear from you! Fill out the form below and we'll get back to you soon.</p>
                 {submitted ? (

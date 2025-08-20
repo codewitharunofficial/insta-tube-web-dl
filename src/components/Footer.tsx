@@ -1,18 +1,13 @@
 import React from 'react';
 
 const Footer: React.FC = () => (
-    <footer style={{
-        padding: '1rem',
-        textAlign: 'center',
-        background: '#f5f5f5',
-        fontSize: '0.95rem'
-    }}>
-        <span>© 2025 Ravi {"(Arun)"} </span>
+    <footer className='footer flex flex-row items-center justify-around p-[1rem] text-center bg-[#f5f5f5] text-lg'>
+        <a href='https://codewitharun-portfolio.vercel.app' target='_blank' rel='noopener noreferrer' className='ml-2 text-[#333] underline underline-offset-4 cursor-pointer hover:text-[#007bff] transition-colors duration-300' >© 2025 Ravi {"(Arun)"} </a>
         <a
             href="https://github.com/codewitharunofficial"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ marginLeft: '0.5rem', color: '#333', textDecoration: 'none' }}
+            className='ml-2 text-[#333] underline underline-offset-4 cursor-pointer hover:text-[#007bff] transition-colors duration-300'
         >
             GitHub Profile
         </a>

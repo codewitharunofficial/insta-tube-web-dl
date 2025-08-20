@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InstaTube-DL",
+  title: "InstaTube-DL - Home",
   description: "Download videos from Instagram",
 };
 
