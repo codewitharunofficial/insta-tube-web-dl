@@ -11,7 +11,7 @@ export async function POST(req) {
     const decodedUrl = decodeURIComponent(url);
 
     // Get client IP from request headers (Vercel-specific)
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    const clientIp = '127.0.0.1';
 
     console.log(clientIp);
 
