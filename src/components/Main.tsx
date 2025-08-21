@@ -139,12 +139,6 @@ const Main = () => {
                                 {(media.bestVideo || media.bestAudio) && (
                                     <YoutubeCard media={media} />
                                 )}
-
-                                {/* All Videos */}
-                                <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                                    Other Videos
-                                </h3>
-
                             </>
                         )}
 
