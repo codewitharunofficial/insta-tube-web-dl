@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^138.0.2",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.540.0",
     "next": "15.4.7",
+    "puppeteer": "^24.17.0",
+    "puppeteer-core": "^24.17.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
